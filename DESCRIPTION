@@ -1,0 +1,18 @@
+Package: mnitables
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2018-12-12
+Authors@R: c(
+    person(c("Bradley", "R"), "Buchsbaum", role = c("aut", "cre"), email = "brad.buchsbaum@gmail.com"))
+Maintainer: Bradley Buchsbaum <brad.buchsbaum@gmail.com>
+Description: More about what it does (maybe more than one line)
+License: License: GPL (>= 2)
+LazyData: TRUE
+Imports:
+  neuroim2,
+  knitr
+Remotes:
+  bbuchsbaum/neuroim2
+RoxygenNote: 6.0.1
+
