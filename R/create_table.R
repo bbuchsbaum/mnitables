@@ -17,6 +17,7 @@ harvard_oxford <- function(cds) {
   vox2 <- coord_to_grid(cort_atlas, cds)
   
   ltab <- do.call(rbind, lapply(1:nrow(vox2), function(i) {
+    print(i)
     v <- vox2[i,]
     
     clab <- cort_atlas[v[1], v[2], v[3]]
@@ -24,7 +25,7 @@ harvard_oxford <- function(cds) {
     
     label <- if (clab == 0 && slab == 0) {
       "unknown"
-    } else if (clab >= 1 || clab <= 48) {
+    } else if (clab >= 1 && clab <= 48) {
       idx <- which(cort_labels$index == (clab-1))
       as.character(cort_labels$regions[idx])
     } else {
