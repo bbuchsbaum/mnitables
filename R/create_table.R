@@ -17,7 +17,7 @@ harvard_oxford <- function(cds) {
   vox2 <- coord_to_grid(cort_atlas, cds)
   
   ltab <- do.call(rbind, lapply(1:nrow(vox2), function(i) {
-    print(i)
+  
     v <- vox2[i,]
     
     clab <- cort_atlas[v[1], v[2], v[3]]
