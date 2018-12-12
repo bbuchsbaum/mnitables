@@ -47,7 +47,7 @@ harvard_oxford <- function(cds) {
 
 
 #' @export
-create_table <- function(im, threshold=0, local_maxima=TRUE, local_maxima_dist=10, statname="z-stat", ...) {
+create_table <- function(im, threshold=0, local_maxima=TRUE, local_maxima_dist=10, statname="z-stat", allow_duplicate_labels=TRUE, ...) {
   ccomp <- conn_comp(im, local_maxima_dist=local_maxima_dist)
   
   local_maxima <- as.data.frame(ccomp$local_maxima)
@@ -60,5 +60,9 @@ create_table <- function(im, threshold=0, local_maxima=TRUE, local_maxima_dist=1
   ltab <- harvard_oxford(cds)
   ltab[[statname]] <- values
   ltab$Area <- area
+  
+  if (!allow_duplicate_labels) {
+    ltab %>% arrange(desc(statname), Label) %>% group_by(Label) %>% filter(row_number() == 1) %>% arrange(desc(Area))
+  }
   ltab
 }
