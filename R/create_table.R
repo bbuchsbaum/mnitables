@@ -56,7 +56,7 @@ create_table <- function(im, threshold=0, local_maxima=TRUE, local_maxima_dist=1
   
   cds <- grid_to_coord(im, vox)
   
-  ltab <- hardvard_oxford(cds)
+  ltab <- harvard_oxford(cds)
   ltab[[statname]] <- values
   ltab$Area <- area
   ltab
