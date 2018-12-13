@@ -46,9 +46,19 @@ harvard_oxford <- function(cds) {
 }
 
 
+#' create a labeled coordinate table
+#' 
+#' 
+#' @param im a\code{NeuroVol} instance
+#' @param a cluster threshold value to define the mask. 
+#' @param local_maxima_dist the distance threshold used to define local_maxima
+#' @param statname the name of the statistic associated with the image values
+#' @param allow_duplicate_labels whether to allow the same atlas label to appear more than once in the table. 
+#'        If \code{FALSE} and the same label appears twice, then only the coordinate with the highest vlaue will be retained.
+#' @param ... extra args to pass to \code{conn_comp}
 #' @export
-create_table <- function(im, threshold=0, local_maxima=TRUE, local_maxima_dist=10, statname="z-stat", allow_duplicate_labels=TRUE, ...) {
-  ccomp <- conn_comp(im, local_maxima_dist=local_maxima_dist)
+create_table <- function(im, threshold=0, local_maxima_dist=10, statname="zstat", allow_duplicate_labels=TRUE, ...) {
+  ccomp <- conn_comp(im, local_maxima_dist=local_maxima_dist,...)
   
   local_maxima <- as.data.frame(ccomp$local_maxima)
   vox <- ccomp$local_maxima[,2:4]
@@ -62,7 +72,8 @@ create_table <- function(im, threshold=0, local_maxima=TRUE, local_maxima_dist=1
   ltab$Area <- area
   
   if (!allow_duplicate_labels) {
-    ltab %>% arrange(desc(statname), Label) %>% group_by(Label) %>% filter(row_number() == 1) %>% arrange(desc(Area))
+    col_name <- rlang::sym(statname)
+    ltab %>% arrange(desc(UQ(col_name)), Label) %>% group_by(Label) %>% filter(row_number() == 1) %>% arrange(desc(Area))
   }
   ltab
 }
