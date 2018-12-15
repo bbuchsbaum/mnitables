@@ -2,9 +2,9 @@
 
 harvard_oxford <- function(cds) {
   cort_labels <- read.table(system.file("extdata", "cortical_table.txt", 
-                                        package = "mnitables"), header=TRUE)
+                                        package = "mnitables"), header=TRUE,stringsAsFactors=TRUE)
   subcort_labels <- read.table(system.file("extdata", "subcortical_table.txt", 
-                                           package = "mnitables"), header=TRUE)
+                                           package = "mnitables"), header=TRUE, stringsAsFactors=TRUE)
   
   cort_atlas <- 
     neuroim2::read_vol(system.file("extdata", "HarvardOxford-cort-maxprob-thr0-2mm.nii.gz", 
@@ -57,6 +57,7 @@ harvard_oxford <- function(cds) {
 #'        If \code{FALSE} and the same label appears twice, then only the coordinate with the highest vlaue will be retained.
 #' @param ... extra args to pass to \code{conn_comp}
 #' @export
+#' @import dplyr
 create_table <- function(im, threshold=0, local_maxima_dist=10, statname="zstat", allow_duplicate_labels=TRUE, ...) {
   ccomp <- conn_comp(im, local_maxima_dist=local_maxima_dist,...)
   
@@ -73,7 +74,8 @@ create_table <- function(im, threshold=0, local_maxima_dist=10, statname="zstat"
   
   if (!allow_duplicate_labels) {
     col_name <- rlang::sym(statname)
-    ltab %>% arrange(desc(UQ(col_name)), Label) %>% group_by(Label) %>% filter(row_number() == 1) %>% arrange(desc(Area))
+    ltab <- ltab %>% arrange(desc(UQ(col_name)), Label) %>% 
+      group_by(Label) %>% filter(row_number() == 1) %>% arrange(desc(Area))
   }
   ltab
 }
