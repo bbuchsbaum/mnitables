@@ -1,10 +1,12 @@
 
-
+#' @import stringr
 harvard_oxford <- function(cds) {
   cort_labels <- read.table(system.file("extdata", "cortical_table.txt", 
                                         package = "mnitables"), header=TRUE,stringsAsFactors=TRUE)
   subcort_labels <- read.table(system.file("extdata", "subcortical_table.txt", 
                                            package = "mnitables"), header=TRUE, stringsAsFactors=TRUE)
+  
+  cort_labels$
   
   cort_atlas <- 
     neuroim2::read_vol(system.file("extdata", "HarvardOxford-cort-maxprob-thr0-2mm.nii.gz", 
