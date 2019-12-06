@@ -1,12 +1,14 @@
 
 #' @import stringr
+#' @import dplyr
 harvard_oxford <- function(cds) {
   cort_labels <- read.table(system.file("extdata", "cortical_table.txt", 
-                                        package = "mnitables"), header=TRUE,stringsAsFactors=TRUE)
+                                        package = "mnitables"), header=TRUE,stringsAsFactors=FALSE)
   subcort_labels <- read.table(system.file("extdata", "subcortical_table.txt", 
-                                           package = "mnitables"), header=TRUE, stringsAsFactors=TRUE)
+                                           package = "mnitables"), header=TRUE, stringsAsFactors=FALSE)
   
-  cort_labels$
+  subcort_labels <- subcort_labels %>% mutate(regions = stringr::str_trim(regions))
+  cort_labels <- cort_labels %>% mutate(regions = stringr::str_trim(regions))
   
   cort_atlas <- 
     neuroim2::read_vol(system.file("extdata", "HarvardOxford-cort-maxprob-thr0-2mm.nii.gz", 
@@ -73,6 +75,7 @@ create_table <- function(im, threshold=0, local_maxima_dist=10, statname="zstat"
   ltab <- harvard_oxford(cds)
   ltab[[statname]] <- values
   ltab$Area <- area
+  ltab$Voxels <- ccomp$cluster_table$N[local_maxima$index]
   
   if (!allow_duplicate_labels) {
     col_name <- rlang::sym(statname)
